@@ -158,6 +158,22 @@ alertcondition(startLongTrade,  'Buy',  'Go long!')
 alertcondition(startShortTrade, 'Sell', 'Go short!')
 alertcondition(startLongTrade or startShortTrade, 'Alert', 'Deal Time!') //-- general alert
 
+
+// Entry conditions
+longCondition = crossover(scaled_loss, scaled_prediction) and filter
+shortCondition = crossunder(scaled_loss, scaled_prediction) and filter
+
+// Exit conditions
+longExitCondition = (hp_counter == holding_p and not changed) or (changed and signal == SELL)
+shortExitCondition = (hp_counter == holding_p and not changed) or (changed and signal == BUY)
+
+// Strategy entry and exit logic
+strategy.entry('Buy', strategy.long, when = longCondition)
+strategy.entry('Sell', strategy.short, when = shortCondition)
+
+strategy.close('Buy', when = longExitCondition)
+strategy.close('Sell', when = shortExitCondition)
+
 //-------------------- Backtesting (TODO)
 
 lot_size  = input(0.01, 'Lot Size', options=[0.01,0.1,0.2,0.3,0.5,1,2,3,5,10,20,30,50,100,1000])
