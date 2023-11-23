@@ -1,5 +1,5 @@
 // This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
-// © codekalmi
+// © capissimo
 
 //@version=4
 study('Machine Learning: Logistic Regression (v.3)', '', true)
@@ -157,22 +157,6 @@ plot(endShortTrade        ? low  : na, 'StopSell', cPink(6), 2, plot.style_cross
 alertcondition(startLongTrade,  'Buy',  'Go long!')
 alertcondition(startShortTrade, 'Sell', 'Go short!')
 alertcondition(startLongTrade or startShortTrade, 'Alert', 'Deal Time!') //-- general alert
-
-
-// Entry conditions
-longCondition = crossover(scaled_loss, scaled_prediction) and filter
-shortCondition = crossunder(scaled_loss, scaled_prediction) and filter
-
-// Exit conditions
-longExitCondition = (hp_counter == holding_p and not changed) or (changed and signal == SELL)
-shortExitCondition = (hp_counter == holding_p and not changed) or (changed and signal == BUY)
-
-// Strategy entry and exit logic
-strategy.entry('Buy', strategy.long, when = longCondition)
-strategy.entry('Sell', strategy.short, when = shortCondition)
-
-strategy.close('Buy', when = longExitCondition)
-strategy.close('Sell', when = shortExitCondition)
 
 //-------------------- Backtesting (TODO)
 
